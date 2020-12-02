@@ -1,4 +1,5 @@
-import Data.List
+import Data.List as List
+import Data.IntSet as Set (fromList, intersection, foldr)
 
 main = do
   x <- readFile "input"
@@ -16,6 +17,6 @@ combinations n xs = do y:xs' <- tails xs
 solve :: Int -> [Int] -> Int
 solve k ns =
   let
-    combs = combinations k ns
+    combs = combinations (k - 1) ns
   in
-    maybe 0 product $ find ((== 2020) . sum) combs
+    Set.foldr (*) 1 ((fromList ns) `intersection` (fromList $ map ((2020 -) . sum) combs))
